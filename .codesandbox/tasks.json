@@ -1,0 +1,27 @@
+{
+  "$schema": "https://codesandbox.io/schemas/tasks.json",
+  "setupTasks": [
+    {
+      "name": "Install backend deps",
+      "command": "pip install -r server/requirements.txt"
+    },
+    {
+      "name": "Install frontend deps",
+      "command": "npm install --prefix web"
+    }
+  ],
+  "tasks": {
+    "backend": {
+      "name": "Backend (FastAPI :8000)",
+      "command": "uvicorn main:app --reload --port 8000 --app-dir server",
+      "runAtStart": true,
+      "preview": { "port": 8000 }
+    },
+    "frontend": {
+      "name": "Frontend (Next.js :3000)",
+      "command": "npm run dev --prefix web",
+      "runAtStart": true,
+      "preview": { "port": 3000 }
+    }
+  }
+}
