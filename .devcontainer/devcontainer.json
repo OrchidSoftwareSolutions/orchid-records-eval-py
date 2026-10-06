@@ -6,7 +6,7 @@
   },
   "hostRequirements": { "cpus": 2 },
   "postCreateCommand": "make setup",
-  "postAttachCommand": "make dev",
+  "postAttachCommand": "curl -sf http://127.0.0.1:8000/health >/dev/null && echo 'Servers already running.' || make dev",
   "forwardPorts": [3000, 8000],
   "portsAttributes": {
     "3000": { "label": "Frontend", "onAutoForward": "openBrowser" },

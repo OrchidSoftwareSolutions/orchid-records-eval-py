@@ -14,11 +14,14 @@ setup:
 	fi
 	cd web && npm ci
 
+# Runs both servers; if either exits, the other is stopped too.
 dev:
-	@trap 'kill 0' INT TERM EXIT; \
-	(cd server && ../$(VENV)/bin/uvicorn main:app --reload --host 127.0.0.1 --port 8000) & \
-	(cd web && npx next dev -H 127.0.0.1 -p $(WEB_PORT)) & \
-	wait
+	@(cd server && exec ../$(VENV)/bin/uvicorn main:app --reload --host 127.0.0.1 --port 8000) & api=$$!; \
+	(cd web && exec node_modules/.bin/next dev -H 127.0.0.1 -p $(WEB_PORT)) & web=$$!; \
+	trap 'kill $$api $$web 2>/dev/null; wait; exit 130' INT TERM; \
+	while kill -0 $$api 2>/dev/null && kill -0 $$web 2>/dev/null; do sleep 1; done; \
+	kill $$api $$web 2>/dev/null; wait; \
+	echo "A server exited (see output above); stopped both."; exit 1
 
 clean:
 	rm -rf $(VENV) web/node_modules web/.next
