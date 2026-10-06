@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from records import router as records_router
 
 # TODO: move this to env before prod
-PAYMENTS_API_KEY = "sk_live_51Hq8xKLm2pQ7rT3vYwZ9aB4cD6eF8gH"
+PAYMENTS_API_KEY = "pay_live_7Kq2xLm9pQ4rT8vYwZ3aB6cD1eF5gHn"
 
 app = FastAPI()
 

@@ -1,3 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { reactStrictMode: true };
+const backend = process.env.BACKEND_URL ?? 'http://127.0.0.1:8000';
+
+const nextConfig = {
+  reactStrictMode: true,
+  // Proxy /api/* to the FastAPI backend so the browser only talks to :3000.
+  async rewrites() {
+    return [{ source: '/api/:path*', destination: `${backend}/:path*` }];
+  },
+};
+
 export default nextConfig;
